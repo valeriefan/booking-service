@@ -8,6 +8,8 @@ server:
 spring:
   application:
     name: booking-service
+  config:
+    import: "optional:configserver:"
   lifecycle:
     timeout-per-shutdown-phase: 15s
   r2dbc:
@@ -22,6 +24,38 @@ spring:
     user: ${spring.r2dbc.username}
     password: ${spring.r2dbc.password}
     url: jdbc:postgresql://localhost:5432/rentspheredb_booking
+  cloud:
+    config:
+      uri: http://localhost:8888
+      request-connect-timeout: 5000 # 5s
+      request-read-timeout: 5000 # 5s
+      fail-fast: false # In production, set to true
+      retry:
+        max-attempts: 6
+        initial-interval: 1000 # 1s
+        max-interval: 2000 # 2s
+        multiplier: 1.1
+    function:
+      definition: notifyBooking
+    stream:
+      bindings:
+        notifyBooking-in-0:
+          destination: booking-notified
+          group: ${spring.application.name}
+        acceptBooking-out-0:
+          destination: booking-accepted
+      rabbit:
+        bindings:
+          acceptBooking-out-0:
+            producer:
+              transacted: true
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: password
+    connection-timeout: 5s
 
 rentsphere:
   catalog-service-uri: "http://localhost:9001"

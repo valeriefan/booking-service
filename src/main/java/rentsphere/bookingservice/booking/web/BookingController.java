@@ -22,7 +22,7 @@ public class BookingController {
     }
 
     @PostMapping
-    public Mono<Booking> submitOrder(
+    public Mono<Booking> submitBooking(
             @RequestBody @Valid BookingRequest bookingRequest
     ) {
         return bookingService.submitBooking(

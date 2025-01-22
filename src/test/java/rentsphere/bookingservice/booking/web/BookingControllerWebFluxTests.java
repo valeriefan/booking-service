@@ -10,8 +10,8 @@ import rentsphere.bookingservice.booking.domain.Booking;
 import rentsphere.bookingservice.booking.domain.BookingService;
 import rentsphere.bookingservice.booking.domain.BookingStatus;
 
-import static org.mockito.BDDMockito.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 @WebFluxTest(BookingController.class)
 class BookingControllerWebFluxTests {
