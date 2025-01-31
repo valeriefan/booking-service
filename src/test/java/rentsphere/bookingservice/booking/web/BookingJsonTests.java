@@ -22,7 +22,8 @@ class BookingJsonTests {
         var booking = new Booking(394L, "123456789", "Acme Fresh Start Housing",
                 "Chicago", "IL",
                 "https://angular.dev/assets/images/tutorials/common/bernard-hermant-CLKGGwIBTaY-unsplash.jpg",
-                1, true, true, BookingStatus.ACCEPTED, Instant.now(), Instant.now(), 21);
+                1, true, true, BookingStatus.ACCEPTED, Instant.now(), Instant.now(),
+                "jon", "marlena", 21);
         var jsonContent = json.write(booking);
         assertThat(jsonContent).extractingJsonPathNumberValue("@.id")
                 .isEqualTo(booking.id().intValue());
@@ -42,6 +43,10 @@ class BookingJsonTests {
                 .isEqualTo(booking.createdDate().toString());
         assertThat(jsonContent).extractingJsonPathStringValue("@.lastModifiedDate")
                 .isEqualTo(booking.lastModifiedDate().toString());
+        assertThat(jsonContent).extractingJsonPathStringValue("@.createdBy")
+                .isEqualTo(booking.createdBy());
+        assertThat(jsonContent).extractingJsonPathStringValue("@.lastModifiedBy")
+                .isEqualTo(booking.lastModifiedBy());
         assertThat(jsonContent).extractingJsonPathNumberValue("@.version")
                 .isEqualTo(booking.version());
     }

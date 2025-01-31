@@ -1,6 +1,8 @@
 package rentsphere.bookingservice.booking.web;
 
 import jakarta.validation.Valid;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +19,8 @@ public class BookingController {
     }
 
     @GetMapping
-    public Flux<Booking> getAllOrders() {
-        return bookingService.getAllBookings();
+    public Flux<Booking> getAllOrders(@AuthenticationPrincipal Jwt jwt) {
+        return bookingService.getAllBookings(jwt.getSubject());
     }
 
     @PostMapping

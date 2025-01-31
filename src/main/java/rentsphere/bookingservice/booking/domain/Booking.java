@@ -1,9 +1,6 @@
 package rentsphere.bookingservice.booking.domain;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.annotation.Version;
+import org.springframework.data.annotation.*;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Instant;
@@ -30,6 +27,12 @@ public record Booking (
         @LastModifiedDate
         Instant lastModifiedDate,
 
+        @CreatedBy
+        String createdBy,
+
+        @LastModifiedBy
+        String lastModifiedBy,
+
         @Version
         int version
 ) {
@@ -39,7 +42,8 @@ public record Booking (
     ) {
         return new Booking(
                 null, code, name, city, state, photo,
-                quantity, wifi, laundry, status, null, null, 0
+                quantity, wifi, laundry, status, null, null,
+                null, null, 0
         );
     }
 }

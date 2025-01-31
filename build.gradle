@@ -20,6 +20,7 @@ repositories {
 
 ext {
     set('springCloudVersion', "2024.0.0")
+    set('testKeycloakVersion', "2.3.0")
 }
 
 dependencyManagement {
@@ -31,7 +32,6 @@ dependencyManagement {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'org.postgresql:r2dbc-postgresql'
@@ -52,6 +52,11 @@ dependencies {
     testImplementation 'org.testcontainers:r2dbc'
     testImplementation("org.springframework.cloud:spring-cloud-stream")
     testImplementation("org.springframework.cloud:spring-cloud-stream-test-binder")
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation "com.github.dasniko:testcontainers-keycloak:${testKeycloakVersion}"
+
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 }
 
 tasks.named('test') {

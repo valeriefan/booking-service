@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -13,6 +14,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import reactor.test.StepVerifier;
 import rentsphere.bookingservice.config.DataConfig;
+
+import java.util.Objects;
 
 @DataR2dbcTest
 @Import(DataConfig.class)
@@ -48,6 +51,25 @@ class BookingRepositoryR2dbcTests {
                 .create(bookingRepository.save(rejectedBooking))
                 .expectNextMatches(
                         order -> order.status().equals(BookingStatus.REJECTED))
+                .verifyComplete();
+    }
+
+    @Test
+    void whenCreateOrderNotAuthenticatedThenNoAuditMetadata() {
+        var rejectedBooking = BookingService.buildRejectedBooking( "1234567890", 3);
+        StepVerifier.create(bookingRepository.save(rejectedBooking))
+                .expectNextMatches(booking -> Objects.isNull(booking.createdBy()) &&
+                        Objects.isNull(booking.lastModifiedBy()))
+                .verifyComplete();
+    }
+
+    @Test
+    @WithMockUser("marlena")
+    void whenCreateOrderAuthenticatedThenAuditMetadata() {
+        var rejectedOrder = BookingService.buildRejectedBooking( "1234567890", 3);
+        StepVerifier.create(bookingRepository.save(rejectedOrder))
+                .expectNextMatches(booking -> booking.createdBy().equals("marlena") &&
+                        booking.lastModifiedBy().equals("marlena"))
                 .verifyComplete();
     }
 }

@@ -30,8 +30,8 @@ public class BookingService {
         this.streamBridge = streamBridge;
     }
 
-    public Flux<Booking> getAllBookings() {
-        return bookingRepository.findAll();
+    public Flux<Booking> getAllBookings(String userId) {
+        return bookingRepository.findAllByCreatedBy(userId);
     }
 
     @Transactional
@@ -83,6 +83,8 @@ public class BookingService {
                 BookingStatus.NOTIFIED,
                 existingBooking.createdDate(),
                 existingBooking.lastModifiedDate(),
+                existingBooking.createdBy(),
+                existingBooking.lastModifiedBy(),
                 existingBooking.version()
         );
     }
