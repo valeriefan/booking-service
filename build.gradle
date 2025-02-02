@@ -21,6 +21,7 @@ repositories {
 ext {
     set('springCloudVersion', "2024.0.0")
     set('testKeycloakVersion', "2.3.0")
+    set('otelVersion', "1.33.0")
 }
 
 dependencyManagement {
@@ -30,6 +31,9 @@ dependencyManagement {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+    runtimeOnly "io.opentelemetry.javaagent:opentelemetry-javaagent:${otelVersion}"
     implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
@@ -44,6 +48,8 @@ dependencies {
     runtimeOnly 'org.flywaydb:flyway-database-postgresql'
     implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
 
+    implementation 'org.springframework.cloud:spring-cloud-starter-config:4.2.0'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
     testImplementation 'com.squareup.okhttp3:mockwebserver'
@@ -55,7 +61,6 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation "com.github.dasniko:testcontainers-keycloak:${testKeycloakVersion}"
-
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 }
 

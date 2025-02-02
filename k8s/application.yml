@@ -1,0 +1,14 @@
+rentsphere:
+  catalog-service-uri: http://catalog-service
+spring:
+  flyway:
+    url: jdbc:postgresql://rentsphere-postgres/rentspheredb_booking
+  r2dbc:
+    url: r2dbc:postgresql://rentsphere-postgres/rentspheredb_booking
+  rabbitmq:
+    host: rentsphere-rabbitmq
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://rentsphere-keycloak/realms/RentSphere
