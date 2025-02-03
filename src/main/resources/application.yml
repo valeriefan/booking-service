@@ -9,7 +9,7 @@ spring:
   application:
     name: booking-service
   config:
-    import: "optional:configserver:"
+    import: ""
   lifecycle:
     timeout-per-shutdown-phase: 15s
   r2dbc:
@@ -26,6 +26,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/rentspheredb_booking
   cloud:
     config:
+      enabled: false # Enable spring cloud config: true
       uri: http://localhost:8888
       request-connect-timeout: 5000 # 5s
       request-read-timeout: 5000 # 5s
