@@ -10,7 +10,7 @@ env:
   OWNER: valeriefan
   REGISTRY: ghcr.io
   APP_REPO: booking-service
-  DEPLOY_REPO: rentsphere-deployment
+  DEPLOY_REPO: deployment-repo
   VERSION: ${{ github.sha }}
 
 jobs:
